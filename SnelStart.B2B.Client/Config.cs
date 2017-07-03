@@ -12,6 +12,16 @@ namespace SnelStart.B2B.Client
 
         public Config(string subscriptionKey, string koppelSleutel)
         {
+            if (string.IsNullOrWhiteSpace(subscriptionKey))
+            {
+                throw new ArgumentException("Parameter cannot be null or whitespace", nameof(subscriptionKey));
+            }
+
+            if (string.IsNullOrWhiteSpace(koppelSleutel))
+            {
+                throw new ArgumentException("Parameter cannot be null or whitespace", nameof(koppelSleutel));
+            }
+
             SubscriptionKey = subscriptionKey;
             KoppelSleutel = koppelSleutel;
         }

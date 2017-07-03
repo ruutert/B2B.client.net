@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
 using SnelStart.B2B.Client.Operations;
 
@@ -12,6 +12,11 @@ namespace SnelStart.B2B.Client
 
         public B2BClient(Config config)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             _clientState = new ClientState(config);
             Authentication = new AuthenticationOperations(_clientState);
         }
