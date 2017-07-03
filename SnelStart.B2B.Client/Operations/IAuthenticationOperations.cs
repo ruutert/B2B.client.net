@@ -4,6 +4,6 @@ namespace SnelStart.B2B.Client.Operations
 {
     public interface IAuthenticationOperations
     {
-        Task<string> LoginAsync(string username, string password);
+        Task<LoginResponse> LoginAsync(string username, string password);
     }
 }

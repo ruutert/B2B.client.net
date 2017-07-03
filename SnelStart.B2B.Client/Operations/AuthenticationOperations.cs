@@ -16,7 +16,7 @@ namespace SnelStart.B2B.Client.Operations
             _config = clientState.Config;
         }
 
-        public async Task<string> LoginAsync(string username, string password)
+        public async Task<LoginResponse> LoginAsync(string username, string password)
         {
             var requestBody = new Dictionary<string, string>
             {
@@ -29,7 +29,12 @@ namespace SnelStart.B2B.Client.Operations
             var json = await message.Content.ReadAsStringAsync();
             dynamic response = JObject.Parse(json);
 
-            return response.access_token;
+            return new LoginResponse
+            {
+                AccessToken = response.access_token,
+                TokenType = response.token_type,
+                ExpiresIn = response.expires_in,
+            };
         }
     }
 }

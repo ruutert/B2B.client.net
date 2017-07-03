@@ -17,9 +17,11 @@ namespace SnelStart.B2B.Client
         }
 
         public async Task AuthorizeAsync()
+        {
             var pair = _clientState.Config.GetApiUsernamePassword();
 
-            _clientState.AccessToken = await Authentication.LoginAsync(pair.Username, pair.Password);
+            var clientStateAccessToken = await Authentication.LoginAsync(pair.Username, pair.Password);
+            _clientState.AccessToken = clientStateAccessToken.AccessToken;
         }
 
         public void Dispose()
