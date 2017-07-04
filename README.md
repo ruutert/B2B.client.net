@@ -2,7 +2,7 @@
 SnelStart B2B API .NET client
 
 # Example
-```csharp
+```cs
 var koppelSleutel = "";
 var subscriptionKey = "";
 var config = new Config(subscriptionKey, koppelSleutel);
