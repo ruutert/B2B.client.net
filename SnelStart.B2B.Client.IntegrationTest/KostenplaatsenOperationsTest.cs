@@ -17,13 +17,13 @@ namespace SnelStart.B2B.Client.IntegrationTest
             _client = DependencyRoot.Client;
         }
         protected override ICrudOperations<KostenplaatsModel> CrudSubject => _client.Kostenplaatsen;
-        protected override KostenplaatsModel CreateNewModel()
+        protected override Task<KostenplaatsModel> CreateNewModelAsync()
         {
-            return new KostenplaatsModel
+            return Task.FromResult(new  KostenplaatsModel
             {
                 Nummer = 1003,
                 Omschrijving = Guid.NewGuid().ToString()
-            };
+            });
         }
 
         [Test]

@@ -9,6 +9,7 @@ namespace SnelStart.B2B.Client
         IKostenplaatsenOperations Kostenplaatsen{ get; }
         IGrootboekenOperations Grootboeken { get; }
         ILandenOperations Landen { get; }
+        IMemoriaalboekingenOperations Memoriaalboekingen { get; }
         IDagboekenOperations Dagboeken { get; }
     }
 }
