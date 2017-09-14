@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace SnelStart.B2B.Client.Operations
 {

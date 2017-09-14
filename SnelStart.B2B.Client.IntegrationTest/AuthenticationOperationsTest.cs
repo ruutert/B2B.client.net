@@ -21,14 +21,11 @@ namespace SnelStart.B2B.Client.IntegrationTest
         }
 
         [Test]
-        public async Task LoginAsync()
+        public async Task WhenAuthorizing_ThenItShouldNotThrow()
         {
-            var pair = _config.GetApiUsernamePassword();
+            await _client.AuthorizeAsync();
 
-            var result = await _client.Authentication.LoginAsync(pair.Username, pair.Password);
-
-            Assert.IsNotEmpty(result.AccessToken);
-            Assert.AreEqual("bearer", result.TokenType);
+            Assert.IsNotEmpty(_client.AccessToken);
         }
     }
 }

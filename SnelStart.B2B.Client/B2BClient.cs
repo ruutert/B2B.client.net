@@ -7,9 +7,9 @@ namespace SnelStart.B2B.Client
     public class B2BClient : IB2BClient
     {
         private readonly ClientState _clientState;
-        public string AccessToken { get { return _clientState.AccessToken; } }
 
-        public IAuthenticationOperations Authentication { get; }
+        public string AccessToken => _clientState.AccessToken;
+
         public IKostenplaatsenOperations Kostenplaatsen { get; }
         public IGrootboekenOperations Grootboeken { get; }
         public ILandenOperations Landen { get; }
@@ -26,7 +26,7 @@ namespace SnelStart.B2B.Client
             }
 
             _clientState = new ClientState(config);
-            Authentication = new AuthenticationOperations(_clientState);
+
             Kostenplaatsen = new KostenplaatsenOperations(_clientState);
             Grootboeken = new GrootboekenOperations(_clientState);
             Landen = new LandenOperations(_clientState);
@@ -36,20 +36,14 @@ namespace SnelStart.B2B.Client
             Verkoopboekingen = new VerkoopboekingenOperations(_clientState);
         }
 
-        public async Task AuthorizeAsync()
-        {
-            var pair = _clientState.Config.GetApiUsernamePassword();
-
-            var clientStateAccessToken = await Authentication.LoginAsync(pair.Username, pair.Password).ConfigureAwait(false);
-            _clientState.AccessToken = clientStateAccessToken.AccessToken;
-
-            _clientState.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_clientState.AccessToken}");
-            _clientState.HttpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _clientState.Config.SubscriptionKey);
-        }
-
         public void Dispose()
         {
             _clientState.Dispose();
+        }
+
+        public async Task AuthorizeAsync()
+        {
+            await _clientState.AuthorizeAsync().ConfigureAwait(false);
         }
     }
 }
