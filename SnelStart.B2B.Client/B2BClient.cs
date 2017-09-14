@@ -7,6 +7,7 @@ namespace SnelStart.B2B.Client
     public class B2BClient : IB2BClient
     {
         private readonly ClientState _clientState;
+        public string AccessToken { get { return _clientState.AccessToken; } }
 
         public IAuthenticationOperations Authentication { get; }
         public IKostenplaatsenOperations Kostenplaatsen { get; }
@@ -15,6 +16,7 @@ namespace SnelStart.B2B.Client
         public IMemoriaalboekingenOperations Memoriaalboekingen { get; }
         public IDagboekenOperations Dagboeken { get; }
         public IRelatiesOperations Relaties { get; }
+        public IVerkoopboekingenOperations Verkoopboekingen { get; }
 
         public B2BClient(Config config)
         {
@@ -31,13 +33,14 @@ namespace SnelStart.B2B.Client
             Memoriaalboekingen = new MemoriaalboekingenOperations(_clientState);
             Dagboeken = new DagboekenOperations(_clientState);
             Relaties = new RelatiesOperations(_clientState);
+            Verkoopboekingen = new VerkoopboekingenOperations(_clientState);
         }
 
         public async Task AuthorizeAsync()
         {
             var pair = _clientState.Config.GetApiUsernamePassword();
 
-            var clientStateAccessToken = await Authentication.LoginAsync(pair.Username, pair.Password);
+            var clientStateAccessToken = await Authentication.LoginAsync(pair.Username, pair.Password).ConfigureAwait(false);
             _clientState.AccessToken = clientStateAccessToken.AccessToken;
 
             _clientState.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_clientState.AccessToken}");
