@@ -45,32 +45,39 @@ namespace SnelStart.B2B.Client
             _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
         }
 
-        public Task<Response<T>> ExecutePostAsync<T>(string resourceName, T dto) where T : IIdentifierModel
+        public async Task<Response<T>> ExecutePostAsync<T>(string resourceName, T dto) where T : IIdentifierModel
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
             var requestBody = JsonConvert.SerializeObject(dto);
 
-            return Execute(async httpClient =>
+            return await Execute(async httpClient =>
             {
                 var response = await httpClient.PostAsync(resourceUri, new StringContent(requestBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
                 return await CreateResponse<T>(response, HttpStatusCode.Created).ConfigureAwait(false);
-            });
+            }).ConfigureAwait(false);
         }
-        public Task<Response<T>> ExecutePutAsync<T>(string resourceName, T dto) where T : IIdentifierModel
+
+        public async Task<Response<T>> ExecutePutAsync<T>(string resourceName, T dto) where T : IIdentifierModel
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
             var requestBody = JsonConvert.SerializeObject(dto);
 
             var itemUri = resourceUri.AddSegment(dto.Id);
-            return Execute(async httpClient =>
+            return await Execute(async httpClient =>
             {
                 var response = await httpClient.PutAsync(itemUri, new StringContent(requestBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
                 return await CreateResponse<T>(response, HttpStatusCode.OK).ConfigureAwait(false);
-            });
+            }).ConfigureAwait(false);
         }
 
         public async Task<Response<T[]>> ExecuteGetAllAsync<T>(string resourceName) where T : IIdentifierModel
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
 
             return await Execute(async httpClient =>
@@ -79,8 +86,11 @@ namespace SnelStart.B2B.Client
                 return await CreateResponse<T[]>(response, HttpStatusCode.OK);
             }).ConfigureAwait(false);
         }
+
         public async Task<Response<T[]>> ExecuteGetAsync<T>(string resourceName, string queryString) where T : IIdentifierModel
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
 
             return await Execute(async httpClient =>
@@ -112,6 +122,8 @@ namespace SnelStart.B2B.Client
 
         public async Task<Response<T>> ExecuteGetByIdAsync<T>(string resourceName, Guid id) where T : IIdentifierModel
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
             var itemUri = resourceUri.AddSegment(id);
 
@@ -124,6 +136,8 @@ namespace SnelStart.B2B.Client
 
         public async Task<Response> ExecuteDeleteAsync(string resourceName, Guid id)
         {
+            await EnsureAuthorizedAsync().ConfigureAwait(false);
+
             var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
             var itemUri = resourceUri.AddSegment(id);
 
@@ -137,6 +151,14 @@ namespace SnelStart.B2B.Client
                     ResponseBody = body
                 };
             }).ConfigureAwait(false);
+        }
+
+        private async Task EnsureAuthorizedAsync()
+        {
+            if (AccessToken == null || RenewTokenBefore < DateTime.UtcNow)
+            {
+                await AuthorizeAsync();
+            }
         }
 
         private async Task<TResult> Execute<TResult>(Func<HttpClient, Task<TResult>> action)
