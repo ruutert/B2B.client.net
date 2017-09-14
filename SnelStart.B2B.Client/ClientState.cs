@@ -1,41 +1,159 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client
 {
     internal class ClientState : IDisposable
     {
-        public HttpClient HttpClient { get; }
-        private readonly IAuthenticationOperations _authentication;
+        private readonly HttpClient _httpClient = new HttpClient();
 
         public Config Config { get; }
         public string AccessToken { get; internal set; }
+        public DateTime RenewTokenBefore { get; set; }
 
         public ClientState(Config config)
         {
             Config = config;
-            HttpClient = new HttpClient();
-
-            _authentication = new AuthenticationOperations(this);
         }
 
         public async Task AuthorizeAsync()
         {
             var pair = Config.GetApiUsernamePassword();
 
-            var clientStateAccessToken = await _authentication.LoginAsync(pair.Username, pair.Password).ConfigureAwait(false);
-            AccessToken = clientStateAccessToken.AccessToken;
+            var requestBody = new Dictionary<string, string>
+            {
+                {"grant_type", "password"},
+                {"username", pair.Username},
+                {"password", pair.Password}
+            };
 
-            HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {AccessToken}");
-            HttpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
+            var message = await _httpClient.PostAsync(Config.AuthUri, new FormUrlEncodedContent(requestBody)).ConfigureAwait(false);
+            var json = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var authResponse = JsonConvert.DeserializeObject<AuthResposne>(json);
+
+            AccessToken = authResponse.Access_Token;
+            RenewTokenBefore = DateTime.UtcNow.AddSeconds(authResponse.Expires_In);
+
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {AccessToken}");
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
         }
 
+        public Task<Response<T>> ExecutePostAsync<T>(string resourceName, T dto) where T : IIdentifierModel
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+            var requestBody = JsonConvert.SerializeObject(dto);
+
+            return Execute(async httpClient =>
+            {
+                var response = await httpClient.PostAsync(resourceUri, new StringContent(requestBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                return await CreateResponse<T>(response, HttpStatusCode.Created).ConfigureAwait(false);
+            });
+        }
+        public Task<Response<T>> ExecutePutAsync<T>(string resourceName, T dto) where T : IIdentifierModel
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+            var requestBody = JsonConvert.SerializeObject(dto);
+
+            var itemUri = resourceUri.AddSegment(dto.Id);
+            return Execute(async httpClient =>
+            {
+                var response = await httpClient.PutAsync(itemUri, new StringContent(requestBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                return await CreateResponse<T>(response, HttpStatusCode.OK).ConfigureAwait(false);
+            });
+        }
+
+        public async Task<Response<T[]>> ExecuteGetAllAsync<T>(string resourceName) where T : IIdentifierModel
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+
+            return await Execute(async httpClient =>
+            {
+                var response = await httpClient.GetAsync(resourceUri);
+                return await CreateResponse<T[]>(response, HttpStatusCode.OK);
+            }).ConfigureAwait(false);
+        }
+        public async Task<Response<T[]>> ExecuteGetAsync<T>(string resourceName, string queryString) where T : IIdentifierModel
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+
+            return await Execute(async httpClient =>
+            {
+                var response = await httpClient.GetAsync(resourceUri + "?" + queryString);
+                return await CreateResponse<T[]>(response, HttpStatusCode.OK);
+            }).ConfigureAwait(false);
+        }
+
+        private async Task<Response<TData>> CreateResponse<TData>(HttpResponseMessage response, HttpStatusCode expectedStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            if (response.StatusCode == expectedStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<TData>(body);
+                return new Response<TData>
+                {
+                    Result = result,
+                    HttpStatusCode = response.StatusCode,
+                    ResponseBody = body
+                };
+            }
+            return new Response<TData>
+            {
+                HttpStatusCode = response.StatusCode,
+                ResponseBody = body
+            };
+        }
+
+        public async Task<Response<T>> ExecuteGetByIdAsync<T>(string resourceName, Guid id) where T : IIdentifierModel
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+            var itemUri = resourceUri.AddSegment(id);
+
+            return await Execute(async httpClient =>
+            {
+                var response = await httpClient.GetAsync(itemUri);
+                return await CreateResponse<T>(response, HttpStatusCode.OK);
+            }).ConfigureAwait(false);
+        }
+
+        public async Task<Response> ExecuteDeleteAsync(string resourceName, Guid id)
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+            var itemUri = resourceUri.AddSegment(id);
+
+            return await Execute(async httpClient =>
+            {
+                var response = await httpClient.DeleteAsync(itemUri);
+                var body = await response.Content.ReadAsStringAsync();
+                return new Response
+                {
+                    HttpStatusCode = response.StatusCode,
+                    ResponseBody = body
+                };
+            }).ConfigureAwait(false);
+        }
+
+        private async Task<TResult> Execute<TResult>(Func<HttpClient, Task<TResult>> action)
+        {
+            return await action(_httpClient).ConfigureAwait(false);
+        }
 
         public void Dispose()
         {
-            HttpClient.Dispose();
+            _httpClient.Dispose();
+        }
+
+        private class AuthResposne
+        {
+            public string Access_Token { get; set; }
+            public string Token_Type { get; set; }
+            public int Expires_In { get; set; }
         }
     }
 }

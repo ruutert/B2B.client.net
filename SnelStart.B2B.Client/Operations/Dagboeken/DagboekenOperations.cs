@@ -2,13 +2,17 @@
 
 namespace SnelStart.B2B.Client.Operations
 {
-    internal class DagboekenOperations : OperationsBase<DagboekModel>, IDagboekenOperations
+    internal class DagboekenOperations : IDagboekenOperations
     {
-        public DagboekenOperations(ClientState clientState) : base(clientState, DagboekModel.ResourceName)
+        private readonly ClientState _clientState;
+        public const string ResourceName = DagboekModel.ResourceName;
+
+        public DagboekenOperations(ClientState clientState)
         {
+            _clientState = clientState;
         }
 
-        public Task<Response<DagboekModel[]>> GetAllAsync() => base.ExecuteGetAllAsync();
+        public Task<Response<DagboekModel[]>> GetAllAsync() => _clientState.ExecuteGetAllAsync<DagboekModel>(ResourceName);
 
     }
 }
