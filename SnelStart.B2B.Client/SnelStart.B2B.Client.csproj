@@ -44,7 +44,6 @@
     <Compile Include="ClientState.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="IB2BClient.cs" />
-    <Compile Include="Operations\Authentication\AuthenticationOperations.cs" />
     <Compile Include="Operations\Bankboekingen\BankboekingModel.cs" />
     <Compile Include="Operations\Bijlagen\InkoopBoekingBijlageContentModel.cs" />
     <Compile Include="Operations\Bijlagen\InkoopBoekingBijlageModel.cs" />
@@ -62,7 +61,6 @@
     <Compile Include="Operations\Dagboeken\DagboekSoortModel.cs" />
     <Compile Include="Operations\Dagboeken\IDagboekenOperations.cs" />
     <Compile Include="Operations\Extensions.cs" />
-    <Compile Include="Operations\Authentication\IAuthenticationOperations.cs" />
     <Compile Include="Operations\Grootboeken\DagboekIdentifierModel.cs" />
     <Compile Include="Operations\Grootboeken\GrootboekenOperations.cs" />
     <Compile Include="Operations\Grootboeken\GrootboekIdentifierModel.cs" />
@@ -92,7 +90,6 @@
     <Compile Include="Operations\Kostenplaatsen\KostenplaatsenOperations.cs" />
     <Compile Include="Operations\Kostenplaatsen\KostenplaatsIdentifierModel.cs" />
     <Compile Include="Operations\Kostenplaatsen\KostenplaatsModel.cs" />
-    <Compile Include="Operations\Authentication\LoginResponse.cs" />
     <Compile Include="Operations\Landen\ILandenOperations.cs" />
     <Compile Include="Operations\Landen\LandenOperations.cs" />
     <Compile Include="Operations\Landen\LandIdentifierModel.cs" />
@@ -100,7 +97,6 @@
     <Compile Include="Operations\Memoriaalboekingen\IMemoriaalboekingenOperations.cs" />
     <Compile Include="Operations\Memoriaalboekingen\MemoriaalboekingenOperations.cs" />
     <Compile Include="Operations\Memoriaalboekingen\MemoriaalboekingModel.cs" />
-    <Compile Include="Operations\OperationsBase.cs" />
     <Compile Include="Operations\Relaties\AanmaningsoortModel.cs" />
     <Compile Include="Operations\Relaties\AdresModel.cs" />
     <Compile Include="Operations\Relaties\EmailVersturenModel.cs" />
