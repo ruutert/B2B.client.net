@@ -5,6 +5,6 @@ namespace SnelStart.B2B.Client.Operations
 {
     public interface IGetAllOperationsWithParent<T>
     {
-        Task<Response<T[]>> GetAllWithParentAsync(Guid parentId);
+        Task<Response<T[]>> GetAllAsync(Guid parentId);
     }
 }

@@ -14,10 +14,10 @@ namespace SnelStart.B2B.Client.Operations
             ResourceName = resourceName;
         }
         
-        public Task<Response<T>> CreateWithParentAsync(T dto, Guid parentId) => ClientState.ExecutePostAsync(string.Format(ResourceName, parentId), dto);
-        public Task<Response<T>> UpdateWithParentAsync(T dto, Guid parentId) => ClientState.ExecutePutAsync(string.Format(ResourceName, parentId), dto);
-        public Task<Response<T>> GetByIdWithParentAsync(Guid id, Guid parentId) => ClientState.ExecuteGetByIdAsync<T>(string.Format(ResourceName, parentId), id);
-        public Task<Response> DeleteAsync(Guid id, Guid parentId) => ClientState.ExecuteDeleteAsync(string.Format(ResourceName, parentId), id);
-        public Task<Response> DeleteAsync(T dto, Guid parentId) => ClientState.ExecuteDeleteAsync(string.Format(ResourceName, parentId), dto.Id);
+        public Task<Response<T>> CreateAsync(Guid parentId, T dto) => ClientState.ExecutePostAsync(string.Format(ResourceName, parentId), dto);
+        public Task<Response<T>> UpdateAsync(Guid parentId, T dto) => ClientState.ExecutePutAsync(string.Format(ResourceName, parentId), dto);
+        public Task<Response<T>> GetByIdAsync(Guid parentId, Guid id) => ClientState.ExecuteGetByIdAsync<T>(string.Format(ResourceName, parentId), id);
+        public Task<Response> DeleteAsync(Guid parentId, Guid id) => ClientState.ExecuteDeleteAsync(string.Format(ResourceName, parentId), id);
+        public Task<Response> DeleteAsync(Guid parentId, T dto) => ClientState.ExecuteDeleteAsync(string.Format(ResourceName, parentId), dto.Id);
     }
 }

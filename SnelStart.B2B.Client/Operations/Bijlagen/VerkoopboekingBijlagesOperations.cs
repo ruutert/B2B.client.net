@@ -10,6 +10,6 @@ namespace SnelStart.B2B.Client.Operations
             : base(clientState, VerkoopBoekingBijlageModel.ResourceName)
         { }   
 
-        public Task<Response<VerkoopBoekingBijlageContentModel[]>> GetAllWithParentAsync(Guid parentId) => ClientState.ExecuteGetAllAsync<VerkoopBoekingBijlageContentModel>(string.Format(ResourceName, parentId));
+        public Task<Response<VerkoopBoekingBijlageContentModel[]>> GetAllAsync(Guid parentId) => ClientState.ExecuteGetAllAsync<VerkoopBoekingBijlageContentModel>(string.Format(ResourceName, parentId));
     }
 }

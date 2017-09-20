@@ -10,7 +10,7 @@ namespace SnelStart.B2B.Client.Operations
         /// <summary>
         /// Geeft de naam van deze gegevenscontainer terug.
         /// </summary>
-        public const string ResourceName = "verkoopboekingen/{0}/bijlagen";
+        public const string ResourceName = "verkoopboekingen/{VerkoopBoekingId}/bijlagen";
         /// <summary>
         /// 
         /// </summary>
