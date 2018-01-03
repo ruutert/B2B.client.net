@@ -43,8 +43,6 @@ namespace SnelStart.B2B.Client
             AccessToken = authResponse.Access_Token;
             RenewTokenBefore = DateTime.UtcNow.AddSeconds(authResponse.Expires_In);
 
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
-
             SetDefaultHeader("Authorization", $"Bearer {AccessToken}");
             SetDefaultHeader("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
         }
