@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -42,8 +43,17 @@ namespace SnelStart.B2B.Client
             AccessToken = authResponse.Access_Token;
             RenewTokenBefore = DateTime.UtcNow.AddSeconds(authResponse.Expires_In);
 
-            HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {AccessToken}");
-            HttpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
+            SetDefaultHeader("Authorization", $"Bearer {AccessToken}");
+            SetDefaultHeader("Ocp-Apim-Subscription-Key", Config.SubscriptionKey);
+        }
+
+        private void SetDefaultHeader(string key, string value)
+        {
+            if (HttpClient.DefaultRequestHeaders.Contains(key))
+            {
+                HttpClient.DefaultRequestHeaders.Remove(key);
+            }
+            HttpClient.DefaultRequestHeaders.Add(key, value);
         }
 
         public Task<Response<T>> ExecutePostAsync<T>(string resourceName, T dto) => ExecutePostAsync<T, T>(resourceName, dto);

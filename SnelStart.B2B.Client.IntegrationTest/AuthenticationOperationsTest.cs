@@ -27,5 +27,14 @@ namespace SnelStart.B2B.Client.IntegrationTest
 
             Assert.IsNotEmpty(_client.AccessToken);
         }
+
+        [Test]
+        public async Task WhenAuthorizingTwice_ThenItShouldNotThrow()
+        {
+            await _client.AuthorizeAsync();
+            await _client.AuthorizeAsync();
+
+            Assert.IsNotEmpty(_client.AccessToken);
+        }
     }
 }
