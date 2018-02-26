@@ -50,10 +50,12 @@
     <Compile Include="DagboekenOperationsTest.cs" />
     <Compile Include="DependencyRoot.cs" />
     <Compile Include="GrootboekenOperationsTest.cs" />
+    <Compile Include="InkoopfacturenIntegrationTest.cs" />
     <Compile Include="KostenplaatsenOperationsTest.cs" />
     <Compile Include="LandenOperationsTest.cs" />
     <Compile Include="MemoriaalboekingOperationsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VerkoopfacturenIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
