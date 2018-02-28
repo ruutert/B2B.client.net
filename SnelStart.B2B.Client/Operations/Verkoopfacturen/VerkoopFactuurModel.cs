@@ -22,7 +22,7 @@ namespace SnelStart.B2B.Client.Operations
         /// <summary>
         /// Het tijdstip waarop de verkoopboeking voor het laatst is gewijzigd.
         /// </summary>
-        public DateTime ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         /// <summary>
         /// Het openstaand saldo van de verkoopboeking.
@@ -38,7 +38,7 @@ namespace SnelStart.B2B.Client.Operations
         /// <summary>
         /// Het tijdstip waarop de factuur is of zal vervallen.
         /// </summary>
-        public DateTime Vervaldatum { get; set; }
+        public DateTime? Vervaldatum { get; set; }
         /// <summary>
         /// De klant/debiteur aan wie de factuur is gericht.
         /// </summary>
@@ -49,12 +49,11 @@ namespace SnelStart.B2B.Client.Operations
         /// De omschrijving van de verkoopboeking.
         /// </summary>
         
-        public DateTime Factuurdatum { get; set; }
+        public DateTime? Factuurdatum { get; set; }
 
         /// <summary>
         /// Het factuurbedrag van de verkoopboeking.
         /// </summary>
         public decimal Factuurbedrag { get; set; }
-
     }
 }
