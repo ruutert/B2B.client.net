@@ -84,6 +84,8 @@
     <Compile Include="Operations\IIdentifierModel.cs" />
     <Compile Include="Operations\Inkoopboekingen\BtwBoekingModel.cs" />
     <Compile Include="Operations\Inkoopboekingen\BtwBoekingSoortModel.cs" />
+    <Compile Include="Operations\Inkoopboekingen\IInkoopboekingenOperations.cs" />
+    <Compile Include="Operations\Inkoopboekingen\InkoopboekingenOperations.cs" />
     <Compile Include="Operations\Inkoopboekingen\InkoopboekingIdentifierModel.cs" />
     <Compile Include="Operations\Inkoopboekingen\InkoopboekingModel.cs" />
     <Compile Include="Operations\Inkoopboekingen\InkoopboekingRegelModel.cs" />
