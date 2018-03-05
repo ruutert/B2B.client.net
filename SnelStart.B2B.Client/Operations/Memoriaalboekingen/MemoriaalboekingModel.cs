@@ -11,7 +11,7 @@ namespace SnelStart.B2B.Client.Operations
         /// 
         /// </summary>
         public const string ResourceName = "memoriaalboekingen";
-        internal MemoriaalboekingModel() : base(ResourceName)
+        public MemoriaalboekingModel() : base(ResourceName)
         {
         }
 
