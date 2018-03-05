@@ -23,6 +23,7 @@ namespace SnelStart.B2B.Client
         public IInkoopfacturenOperations Inkoopfacturen { get; }
         public IBankboekingenOperations Bankboekingen { get; }
         public IBankafschriftBestandenOperations BankafschriftBestanden { get; }
+        public IInkoopboekingenOperations Inkoopboekingen { get; }
 
         public B2BClient(Config config)
         {
@@ -47,6 +48,7 @@ namespace SnelStart.B2B.Client
             Inkoopfacturen = new InkoopfacturenOperations(_clientState);
             Bankboekingen = new BankboekingenOperations(_clientState);
             BankafschriftBestanden = new BankafschriftBestandenOperations(_clientState);
+            Inkoopboekingen = new InkoopboekingenOperations(_clientState);
         }
 
         private static void ConfigureServicePointManager(Config config)
