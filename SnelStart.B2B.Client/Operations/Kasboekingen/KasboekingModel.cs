@@ -2,14 +2,20 @@ using System;
 
 namespace SnelStart.B2B.Client.Operations
 {
-
+    /// <summary>
+    /// De gegevenscontainer voor een kasboeking.
+    /// </summary>
     public class KasboekingModel : IdentifierModel
     {
         /// <summary>
-        /// 
+        /// Geeft de naam van deze gegevenscontainer terug.
         /// </summary>
         public const string ResourceName = "kasboekingen";
-        internal KasboekingModel() : base(ResourceName)
+
+        /// <summary>
+        /// Geeft een instantie van een <see cref="KasboekingModel"/> terug.
+        /// </summary>
+        public KasboekingModel() : base(ResourceName)
         {
         }
 

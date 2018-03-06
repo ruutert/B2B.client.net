@@ -4,14 +4,20 @@ using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client.Operations
 {
-    
+    /// <summary>
+    /// De gegevenscontainer voor een memoriaalboeking.
+    /// </summary>
     public class MemoriaalboekingModel : IdentifierModel
     {
         /// <summary>
-        /// 
+        /// Geeft de naam van deze gegevenscontainer terug.
         /// </summary>
         public const string ResourceName = "memoriaalboekingen";
-        internal MemoriaalboekingModel() : base(ResourceName)
+        
+        /// <summary>
+        /// Geeft een instantie van een <see cref="MemoriaalboekingModel"/> terug.
+        /// </summary>
+        public MemoriaalboekingModel() : base(ResourceName)
         {
         }
 
