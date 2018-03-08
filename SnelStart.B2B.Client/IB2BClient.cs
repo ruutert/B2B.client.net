@@ -18,5 +18,6 @@ namespace SnelStart.B2B.Client
         IBankboekingenOperations Bankboekingen{ get; }
         IBankafschriftBestandenOperations BankafschriftBestanden { get; }
         IInkoopboekingenOperations Inkoopboekingen { get; }
+        IRelatieInkoopboekingenOperations RelatieInkoopboekingen { get; }
     }
 }
