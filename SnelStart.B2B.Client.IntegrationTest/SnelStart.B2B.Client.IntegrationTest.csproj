@@ -55,6 +55,7 @@
     <Compile Include="LandenOperationsTest.cs" />
     <Compile Include="MemoriaalboekingOperationsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelatieInkoopboekingenIntegrationTest.cs" />
     <Compile Include="VerkoopfacturenIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
