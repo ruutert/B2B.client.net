@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-
-namespace SnelStart.B2B.Client.Operations
+﻿namespace SnelStart.B2B.Client.Operations
 {
     /// <summary>
     /// Een enumeratie van grootboekfuncties.
