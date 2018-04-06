@@ -48,7 +48,7 @@ namespace SnelStart.B2B.Client
             var message = await HttpClient.PostAsync(Config.AuthUri, new FormUrlEncodedContent(requestBody), cancellationToken).ConfigureAwait(false);
             var json = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var authResponse = JsonConvert.DeserializeObject<AuthResposne>(json);
+            var authResponse = JsonConvert.DeserializeObject<AuthResponse>(json);
 
             AccessToken = authResponse.Access_Token;
             RenewTokenBefore = DateTime.UtcNow.AddSeconds(authResponse.Expires_In);
@@ -161,7 +161,7 @@ namespace SnelStart.B2B.Client
             return response;
         }
 
-        private class AuthResposne
+        private class AuthResponse
         {
             public string Access_Token { get; set; }
             public string Token_Type { get; set; }
