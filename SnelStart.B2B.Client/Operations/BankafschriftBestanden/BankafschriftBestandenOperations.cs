@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
@@ -14,7 +15,12 @@ namespace SnelStart.B2B.Client.Operations
 
         public Task<Response<BankafschriftBestandResponse[]>> ReadBankafschriftBestandenAsync(BankafschriftBestand[] bestanden)
         {
-            return ClientState.ExecutePostAsync<BankafschriftBestand[], BankafschriftBestandResponse[]>(BankafschriftBestand.ResourceName, bestanden);
+            return ReadBankafschriftBestandenAsync(bestanden, CancellationToken.None);
+        }
+
+        public Task<Response<BankafschriftBestandResponse[]>> ReadBankafschriftBestandenAsync(BankafschriftBestand[] bestanden, CancellationToken cancellationToken)
+        {
+            return ClientState.ExecutePostAsync<BankafschriftBestand[], BankafschriftBestandResponse[]>(BankafschriftBestand.ResourceName, bestanden, cancellationToken);
         }
     }
 }

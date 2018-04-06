@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using SnelStart.B2B.Client.Operations;
 
@@ -71,7 +72,12 @@ namespace SnelStart.B2B.Client
 
         public async Task AuthorizeAsync()
         {
-            await _clientState.AuthorizeAsync().ConfigureAwait(false);
+            await _clientState.AuthorizeAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        public async Task AuthorizeAsync(CancellationToken cancellationToken)
+        {
+            await _clientState.AuthorizeAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

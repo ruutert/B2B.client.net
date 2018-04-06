@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
 {
@@ -8,6 +9,7 @@ namespace SnelStart.B2B.Client.Operations
             : base(clientState, KostenplaatsIdentifierModel.ResourceName)
         { }
 
-        public Task<Response<KostenplaatsModel[]>> GetAllAsync() => ClientState.ExecuteGetAllAsync<KostenplaatsModel>(ResourceName);
+        public Task<Response<KostenplaatsModel[]>> GetAllAsync() => GetAllAsync(CancellationToken.None);
+        public Task<Response<KostenplaatsModel[]>> GetAllAsync(CancellationToken cancellationToken) => ClientState.ExecuteGetAllAsync<KostenplaatsModel>(ResourceName, cancellationToken);
     }
 }

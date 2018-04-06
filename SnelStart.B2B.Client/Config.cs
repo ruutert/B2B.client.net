@@ -1,27 +1,64 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using SnelStart.B2B.Client.Interceptors;
 
 namespace SnelStart.B2B.Client
 {
     public class Config
     {
+        private static readonly Lazy<HttpClient> DefaultHttpClientProviderInstance = new Lazy<HttpClient>(() =>
+        {
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = new CookieContainer(),
+                UseCookies = true
+            };
+            return new HttpClient(handler);
+        });
+
+        private static readonly Func<HttpClient> DefaultHttpClientProvider =
+            () => DefaultHttpClientProviderInstance.Value;
+
+        private Action<string> _logger = x => { };
+
+        public Func<HttpClient> HttpClientProvider { get; set; } = DefaultHttpClientProvider;
+
         public Uri AuthUri { get; }
         public Uri ApiBaseUriVersioned { get; }
         public string SubscriptionKey { get; }
         public string KoppelSleutel { get; }
-        public int ConnectionLeaseTimeoutInMilliseconds { get; set; } = (int) TimeSpan.FromMinutes(1).TotalMilliseconds;
+        public int ConnectionLeaseTimeoutInMilliseconds { get; set; } = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
         public int DnsRefreshTimeoutInMilliseconds { get; set; } = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
         public bool ConfigureDnsRefreshTimeoutEnabled { get; set; } = true;
+        public List<IRequestInterceptor> RequestInterceptors { get; } = new List<IRequestInterceptor>();
+
+        public Action<string> Logger
+        {
+            get
+            {
+                return _logger;
+            }
+            set
+            {
+                IsLoggerEnabled = true;
+                _logger = value;
+            }
+        }
+
+        public bool IsLoggerEnabled { get; private set; } = false;
 
         public Config(string subscriptionKey, string koppelSleutel)
             : this(
-                  subscriptionKey, 
-                  koppelSleutel, 
-                  new Uri("https://auth.snelstart.nl"), 
+                  subscriptionKey,
+                  koppelSleutel,
+                  new Uri("https://auth.snelstart.nl"),
                   new Uri("https://b2bapi.snelstart.nl")
             )
         {
-           
+
         }
 
         public Config(string subscriptionKey, string koppelSleutel, Uri authUri, Uri apiUri)
@@ -71,5 +108,6 @@ namespace SnelStart.B2B.Client
             var result = userKey.Split(new[] { ":" }, StringSplitOptions.None);
             return result;
         }
+
     }
 }

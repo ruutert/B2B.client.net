@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
@@ -9,6 +10,7 @@ namespace SnelStart.B2B.Client.Operations
         {
         }
 
-        public Task<Response<VerkoopFactuurModel[]>> GetAsync(string queryString) => ClientState.ExecuteGetAsync<VerkoopFactuurModel>(ResourceName, queryString);
+        public Task<Response<VerkoopFactuurModel[]>> GetAsync(string queryString) => GetAsync(queryString, CancellationToken.None);
+        public Task<Response<VerkoopFactuurModel[]>> GetAsync(string queryString, CancellationToken cancellationToken) => ClientState.ExecuteGetAsync<VerkoopFactuurModel>(ResourceName, queryString, cancellationToken);
     }
 }

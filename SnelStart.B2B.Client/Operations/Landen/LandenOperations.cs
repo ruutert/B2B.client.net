@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
@@ -13,7 +14,9 @@ namespace SnelStart.B2B.Client.Operations
             _clientState = clientState;
         }
 
-        public Task<Response<LandModel[]>> GetAllAsync() => _clientState.ExecuteGetAllAsync<LandModel>(ResourceName);
-        public Task<Response<LandModel>> GetByIdAsync(Guid id) => _clientState.ExecuteGetByIdAsync<LandModel>(ResourceName, id);
+        public Task<Response<LandModel[]>> GetAllAsync() => GetAllAsync(CancellationToken.None);
+        public Task<Response<LandModel[]>> GetAllAsync(CancellationToken cancellationToken) => _clientState.ExecuteGetAllAsync<LandModel>(ResourceName, cancellationToken);
+        public Task<Response<LandModel>> GetByIdAsync(Guid id) => GetByIdAsync(id, CancellationToken.None);
+        public Task<Response<LandModel>> GetByIdAsync(Guid id, CancellationToken cancellationToken) => _clientState.ExecuteGetByIdAsync<LandModel>(ResourceName, id, cancellationToken);
     }
 }

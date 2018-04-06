@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
@@ -15,12 +16,17 @@ namespace SnelStart.B2B.Client.Operations
             ParentResourceName = parentResourceName;
             ResourceName = resourceName;
         }
-        
-        public Task<Response<T>> CreateAsync(Guid parentId, T dto) => ClientState.ExecutePostAsync(GetBaseUri(parentId), dto);
-        public Task<Response<T>> UpdateAsync(Guid parentId, T dto) => ClientState.ExecutePutAsync(GetBaseUri(parentId), dto);
-        public Task<Response<T>> GetByIdAsync(Guid parentId, Guid id) => ClientState.ExecuteGetByIdAsync<T>(GetBaseUri(parentId), id);
-        public Task<Response> DeleteAsync(Guid parentId, Guid id) => ClientState.ExecuteDeleteAsync(GetBaseUri(parentId), id);
-        public Task<Response> DeleteAsync(Guid parentId, T dto) => ClientState.ExecuteDeleteAsync(GetBaseUri(parentId), dto.Id);
+
+        public Task<Response<T>> CreateAsync(Guid parentId, T dto) => CreateAsync(parentId, dto, CancellationToken.None);
+        public Task<Response<T>> CreateAsync(Guid parentId, T dto, CancellationToken cancellationToken) => ClientState.ExecutePostAsync(GetBaseUri(parentId), dto, cancellationToken);
+        public Task<Response<T>> UpdateAsync(Guid parentId, T dto) => UpdateAsync(parentId, dto, CancellationToken.None);
+        public Task<Response<T>> UpdateAsync(Guid parentId, T dto, CancellationToken cancellationToken) => ClientState.ExecutePutAsync(GetBaseUri(parentId), dto, cancellationToken);
+        public Task<Response<T>> GetByIdAsync(Guid parentId, Guid id) => GetByIdAsync(parentId, id, CancellationToken.None);
+        public Task<Response<T>> GetByIdAsync(Guid parentId, Guid id, CancellationToken cancellationToken) => ClientState.ExecuteGetByIdAsync<T>(GetBaseUri(parentId), id, cancellationToken);
+        public Task<Response> DeleteAsync(Guid parentId, Guid id) => DeleteAsync(parentId, id, CancellationToken.None);
+        public Task<Response> DeleteAsync(Guid parentId, Guid id, CancellationToken cancellationToken) => ClientState.ExecuteDeleteAsync(GetBaseUri(parentId), id, cancellationToken);
+        public Task<Response> DeleteAsync(Guid parentId, T dto) => DeleteAsync(parentId, dto.Id, CancellationToken.None);
+        public Task<Response> DeleteAsync(Guid parentId, T dto, CancellationToken cancellationToken) => ClientState.ExecuteDeleteAsync(GetBaseUri(parentId), dto.Id, cancellationToken);
 
         protected string GetBaseUri(Guid parentId)
         {

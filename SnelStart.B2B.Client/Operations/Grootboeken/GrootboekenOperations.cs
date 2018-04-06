@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace SnelStart.B2B.Client.Operations
 {
@@ -8,7 +9,9 @@ namespace SnelStart.B2B.Client.Operations
             : base(clientState, GrootboekModel.ResourceName)
         { }
 
-        public Task<Response<GrootboekModel[]>> GetAllAsync() => ClientState.ExecuteGetAllAsync< GrootboekModel>(ResourceName);
-        public Task<Response<GrootboekModel[]>> GetAsync(string queryString) => ClientState.ExecuteGetAsync<GrootboekModel>(ResourceName, queryString);
+        public Task<Response<GrootboekModel[]>> GetAllAsync() => GetAllAsync(CancellationToken.None);
+        public Task<Response<GrootboekModel[]>> GetAllAsync(CancellationToken cancellationToken) => ClientState.ExecuteGetAllAsync< GrootboekModel>(ResourceName, cancellationToken);
+        public Task<Response<GrootboekModel[]>> GetAsync(string queryString) => GetAsync(queryString, CancellationToken.None);
+        public Task<Response<GrootboekModel[]>> GetAsync(string queryString, CancellationToken cancellationToken) => ClientState.ExecuteGetAsync<GrootboekModel>(ResourceName, queryString, cancellationToken);
     }
 }

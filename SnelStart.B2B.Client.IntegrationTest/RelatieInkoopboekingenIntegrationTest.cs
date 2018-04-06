@@ -1,7 +1,9 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
+using System.Linq;
 using NUnit.Framework;
+using SnelStart.B2B.Client;
+using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client.IntegrationTest
 {
@@ -9,8 +11,6 @@ namespace SnelStart.B2B.Client.IntegrationTest
     public class RelatieInkoopboekingenIntegrationTest
     {
         private B2BClient _client;
-        //Set this to a valid relation id to run the test.
-        private Guid relatieId = Guid.Empty;
 
         [SetUp]
         public void Setup()
@@ -21,9 +21,23 @@ namespace SnelStart.B2B.Client.IntegrationTest
         [Test]
         public async Task GetAsync()
         {
-            var response = await _client.RelatieInkoopboekingen.GetAllAsync(relatieId);
+            var relatie = await GetRelatieOrInconclusiveAsync();
+
+            var response = await _client.RelatieInkoopboekingen.GetAllAsync(relatie.Id);
 
             Assert.That(response.HttpStatusCode, Is.EqualTo(HttpStatusCode.OK));
+        }
+
+        private async Task<RelatieModel> GetRelatieOrInconclusiveAsync()
+        {
+            var response = await _client.Relaties.GetAsync("$top=1");
+            var relatie = response.Result.FirstOrDefault();
+
+            if (relatie == null)
+            {
+                Assert.Inconclusive("No relatie available");
+            }
+            return relatie;
         }
     }
 }

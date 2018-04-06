@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client
@@ -19,5 +21,8 @@ namespace SnelStart.B2B.Client
         IBankafschriftBestandenOperations BankafschriftBestanden { get; }
         IInkoopboekingenOperations Inkoopboekingen { get; }
         IRelatieInkoopboekingenOperations RelatieInkoopboekingen { get; }
+
+        Task AuthorizeAsync();
+        Task AuthorizeAsync(CancellationToken cancellationToken);
     }
 }
