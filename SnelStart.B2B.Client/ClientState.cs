@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SnelStart.B2B.Client.Interceptors;
 using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client
@@ -145,7 +146,7 @@ namespace SnelStart.B2B.Client
 
         private async Task<HttpResponseMessage> Execute(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var interceptors = _defaultInterceptors.Union(Config.RequestInterceptors).ToArray();
+            var interceptors = Config.RequestInterceptors.Union(_defaultInterceptors).ToArray();
             foreach (var interceptor in interceptors)
             {
                 await interceptor.OnBeforeSendAsync(request, cancellationToken);
