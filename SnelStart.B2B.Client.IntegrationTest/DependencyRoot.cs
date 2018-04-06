@@ -17,7 +17,7 @@ namespace SnelStart.B2B.Client.IntegrationTest
 
             if (string.IsNullOrEmpty(koppelSleutel))
             {
-                Assert.Inconclusive("No koppelsteutel configured");
+                Assert.Inconclusive("No koppelSleutel configured");
             }
             if (string.IsNullOrEmpty(subscriptionKey))
             {
