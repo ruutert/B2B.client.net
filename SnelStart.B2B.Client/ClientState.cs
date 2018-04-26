@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -12,7 +11,6 @@ using SnelStart.B2B.Client.Operations;
 
 namespace SnelStart.B2B.Client
 {
-
     internal class ClientState
     {
         private static readonly HttpClient HttpClient = new HttpClient();
@@ -28,11 +26,9 @@ namespace SnelStart.B2B.Client
             _defaultInterceptors = new[]
             {
                 new AddAuthenticationHeadersInterceptor(config, this),
-                config.IsLoggerEnabled ? new LoggerInterceptor(config) : NullRequestInterceptor.Instance 
+                config.IsLoggerEnabled ? new LoggerInterceptor(config) : NullRequestInterceptor.Instance
             };
         }
-
-        
 
         public async Task AuthorizeAsync(CancellationToken cancellationToken)
         {
@@ -101,6 +97,14 @@ namespace SnelStart.B2B.Client
             var request = new HttpRequestMessage(HttpMethod.Get, itemUri);
             return await ExecuteAndDeserialize<T>(request, cancellationToken).ConfigureAwait(false);
         }
+        
+        public async Task<Response> ExecuteGetXmlByUrlAsync(string resourceName, Guid id, string part, CancellationToken cancellationToken)
+        {
+            var resourceUri = Config.ApiBaseUriVersioned.AddSegment(resourceName);
+            var itemUri = resourceUri.AddSegment(id).AddSegment(part);
+            var request = new HttpRequestMessage(HttpMethod.Get, itemUri);
+            return await ExecuteAndWrapResponse(request, cancellationToken).ConfigureAwait(false);
+        }
 
         public async Task<Response> ExecuteDeleteAsync(string resourceName, Guid id, CancellationToken cancellationToken)
         {
@@ -108,7 +112,7 @@ namespace SnelStart.B2B.Client
             var itemUri = resourceUri.AddSegment(id);
 
             var request = new HttpRequestMessage(HttpMethod.Delete, itemUri);
-            return await ExecuteAndDeserialize(request, cancellationToken).ConfigureAwait(false);
+            return await ExecuteAndWrapResponse(request, cancellationToken).ConfigureAwait(false);
         }
 
         internal async Task EnsureAuthorizedAsync(CancellationToken cancellationToken)
@@ -118,6 +122,7 @@ namespace SnelStart.B2B.Client
                 await AuthorizeAsync(cancellationToken);
             }
         }
+
         private async Task<Response<T>> ExecuteAndDeserialize<T>(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var response = await Execute(request, cancellationToken);
@@ -132,7 +137,7 @@ namespace SnelStart.B2B.Client
             };
         }
 
-        private async Task<Response> ExecuteAndDeserialize(HttpRequestMessage request, CancellationToken cancellationToken)
+        private async Task<Response> ExecuteAndWrapResponse(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var response = await Execute(request, cancellationToken);
 
