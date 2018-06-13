@@ -12,7 +12,7 @@ namespace SnelStart.B2B.Client.Interceptors
         }
         public Task OnBeforeSendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            return Task.CompletedTask; ;
+            return Task.FromResult(true); ;
 
         }
 
