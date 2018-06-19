@@ -1,5 +1,3 @@
-
-
 namespace SnelStart.B2B.Client.Operations
 {
     /// <summary>
@@ -7,15 +5,11 @@ namespace SnelStart.B2B.Client.Operations
     /// </summary>
     public class BtwBoekingregelModel
     {
+        public decimal Debet { get; set; }
         
-        
-        public decimal Bedrag { get; set; }
-
-        
+        public decimal Credit { get; set; }
         
         public BtwTypeModel Type { get; set; }
-
-        
         
         public BtwTariefModel Tarief { get; set; } 
     }
