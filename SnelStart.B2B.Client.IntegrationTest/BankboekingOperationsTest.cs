@@ -48,7 +48,8 @@ namespace SnelStart.B2B.Client.IntegrationTest
                     new GrootboekBoekingsRegelModel
                     {
                         Omschrijving = "test",
-                        Bedrag = 1,
+                        Credit = 1,
+                        Debet = 0,
                         Grootboek = new GrootboekIdentifierModel(grootboek.Id)
                     }
                 }
