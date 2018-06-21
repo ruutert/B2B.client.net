@@ -1,3 +1,7 @@
+![Build](https://snelstart.visualstudio.com/_apis/public/build/definitions/31e193b9-9709-4165-914a-80596aec79d0/2/badge)
+[![NuGet](https://img.shields.io/nuget/v/SnelStart.B2B.Client.svg)](https://www.nuget.org/packages/SnelStart.B2B.Client/)
+[![NuGet](https://img.shields.io/nuget/dt/SnelStart.B2B.Client.svg)](https://www.nuget.org/stats/packages/SnelStart.B2B.Client?groupby=Version)
+
 # B2B.client.net
 SnelStart B2B API .NET client
 
