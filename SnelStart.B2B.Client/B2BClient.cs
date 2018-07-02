@@ -26,7 +26,7 @@ namespace SnelStart.B2B.Client
         public IBankafschriftBestandenOperations BankafschriftBestanden { get; }
         public IInkoopboekingenOperations Inkoopboekingen { get; }
         public IRelatieInkoopboekingenOperations RelatieInkoopboekingen { get; }
-        public IInkoopBoekingBijlageOperations InkoopBoekingBijlages { get; }
+        public IInkoopBoekingBijlagesOperations InkoopboekingBijlages { get; }
 
         public B2BClient(Config config)
         {
@@ -53,7 +53,7 @@ namespace SnelStart.B2B.Client
             BankafschriftBestanden = new BankafschriftBestandenOperations(_clientState);
             Inkoopboekingen = new InkoopboekingenOperations(_clientState);
             RelatieInkoopboekingen = new RelatieInkoopboekingenOperations(_clientState);
-            InkoopBoekingBijlages = new InkoopBoekingBijlageOperations(_clientState);
+            InkoopboekingBijlages = new InkoopBoekingBijlagesOperations(_clientState);
         }
 
         private static void ConfigureServicePointManager(Config config)
