@@ -10,7 +10,7 @@ namespace SnelStart.B2B.Client.Operations
 
     public class Response<T> : Response
     {
-        public T Result { get; internal set; }
+        public T Result { get; set; }
 
     }
 }
