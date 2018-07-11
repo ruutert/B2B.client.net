@@ -22,13 +22,13 @@
 
   <PropertyGroup Condition=" '$(PackageVersion)' != '' ">
     <Version>$(PackageVersion)</Version>
-    <AssemblyVersion>$(PackageVersion)</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>$(PackageVersion)</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(BUILD_BUILDNUMBER)' != '' And '$(PackageVersion)' == '' ">
     <Version>$(BUILD_BUILDNUMBER)</Version>
-    <AssemblyVersion>$(BUILD_BUILDNUMBER)</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>$(BUILD_BUILDNUMBER)</FileVersion>
   </PropertyGroup>
   
