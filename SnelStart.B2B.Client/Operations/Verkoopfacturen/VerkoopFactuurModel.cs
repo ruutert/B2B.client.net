@@ -46,6 +46,12 @@ namespace SnelStart.B2B.Client.Operations
         public RelatieIdentifierModel Relatie { get; set; }
 
         /// <summary>
+        /// De verkoopboeking voor deze factuur
+        /// </summary>
+        public VerkoopboekingIdentifierModel Verkoopboeking { get; set; }
+
+
+        /// <summary>
         /// De omschrijving van de verkoopboeking.
         /// </summary>
         
